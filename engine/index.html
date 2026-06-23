@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Engine </title>
+    <style>
+        html, body {
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script>
+const c = document.getElementById("c");
+const ctx = c.getContext("2d");
+
+const FPS = 60;
+const FrameTime = 1000 / FPS;
+
+c.width = window.innerWidth;
+c.height = window.innerHeight;
+
+let x = 200;
+let y = 200;
+
+let speedX = 0;
+let speedY = 100;
+
+let gravity = 100;
+let landingLoss = 0.8;
+
+// let dragging = false;
+// let offsetX = 0;
+// let offsetY = 0;
+
+if (FPS > 1) {
+    speedX = speedX / FPS;
+    speedY = speedY / FPS;
+    gravity = gravity / FPS;
+}
+
+// ---------------- UPDATE ----------------
+
+function box1() {
+    speedY += gravity;
+
+    x += speedX;
+    y += speedY;
+
+    if (x >= c.width - 100) {
+        x = c.width - 100;
+        speedX = -speedX;
+    }
+
+    if (x <= 0) {
+        x = 0;
+        speedX = -speedX;
+    }
+
+    if (y >= c.height - 100) {
+        y = c.height - 100;
+        speedY = -speedY * landingLoss;
+    }
+
+    if (y <= 0) {
+        y = 0;
+        speedY = -speedY;
+    }
+
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "white";
+    ctx.fillRect(x, y, 100, 100);
+
+}
+
+function upd() {   // Update function
+    box1();
+}
+
+// ---------------- LOOP ----------------
+
+let lastTime = 0;
+
+function animate(timestamp) {
+    requestAnimationFrame(animate);
+
+    let time = timestamp - lastTime;
+
+    if (time >= FrameTime) {
+        lastTime = timestamp - (time % FrameTime);
+        upd();
+    }
+}
+
+requestAnimationFrame(animate);
+
+</script>
+</body>
+</html>
