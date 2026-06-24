@@ -3,20 +3,24 @@ const ctx = c.getContext("2d");
 
 const FPS = 60;
 const FrameTime = 1000 / FPS;
+const m = 100
 
 c.width = window.innerWidth;
 c.height = window.innerHeight;
 
-let x = 200;
-let y = 200;
 
-let speedX = 1500;
+
+let x = 2*m;
+let y = 2*m;
+
+let speedX = 15000;
 let speedY = 0;
 
-let gravity = 2;
-let landingLoss = 0.2;
-let friction = 1;
-let airFriction = 0.3;
+let gravity = 9.81*m;
+let landingLoss = 0.9;
+let friction = 10;
+let airFriction = 0.5;
+let surface = 30
 
 // let isOnGround = false;
 
@@ -36,8 +40,8 @@ function box1() {
     x += speedX;
     y += speedY;
 
-    if (x > c.width - 100) {
-        x = c.width - 100;
+    if (x > c.width - surface) {
+        x = c.width - surface;
         speedX = -speedX * landingLoss;
 
         // if (Math.abs(speedX) < 1) speedX = 0;
@@ -49,8 +53,8 @@ function box1() {
         speedX *= landingLoss;
     }
 
-    if (y >= c.height - 112) {
-        y = c.height - 112;
+    if (y >= c.height - surface) {
+        y = c.height - surface;
         speedY = -speedY * landingLoss;
         isOnGround = true
     } else {
@@ -109,7 +113,7 @@ function box1() {
 
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.fillStyle = "black";
-    ctx.fillRect(x, y, 100, 100);
+    ctx.fillRect(x, y, surface, surface);
 
 }
 
