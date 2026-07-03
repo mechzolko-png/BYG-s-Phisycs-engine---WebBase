@@ -1,5 +1,5 @@
 export class GameObject {
-    constructor (positionX,positionY,width,height,shape,world) {
+    constructor (positionX,positionY,width,height,shape,world,color) {
         this.x = positionX;
         this.y = positionY;
         this.speedX = 1000;
@@ -12,13 +12,14 @@ export class GameObject {
         this.width = width;
         this.height = height;
         this.shape = shape;
+        this.color = color;
 
         if (this.x == "random") {
             this.x = Math.random() * world.width
         }
     };
 
-    update (world,dt) {
+    update (world,dt,isColliding) {
         // gravity
         this.speedY += world.gravity * dt;
 
@@ -67,13 +68,20 @@ export class GameObject {
             this.speedX = this.speedX * -1;
         }
 
-    };
+        if (isColliding) {
+            this.color = this.color;
+        } else {
+            this.color = this.color;
+        }
 
+    };
 
     draw (ctx) { // Shapes: polygon,rect,circle
         if (this.shape == "rect") {
-            ctx.fillRect(this.x,this.y,this.width,this.height,"black");
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x,this.y,this.width,this.height);
         } else if (this.shape == "circle") {
+            ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(this.x,this.y,this.width,0,Math.PI * 2);
             ctx.fill();

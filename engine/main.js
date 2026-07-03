@@ -21,8 +21,10 @@ c.height = window.innerHeight;
 
 // objects
 const world = new World(c);
-const obj = new GameObject("random",100,50,50,"circle",world);
+const obj = new GameObject("random",100,50,50,"circle",world,"orange");
+const obj2 = new GameObject("random",100,50,50,"circle",world,"black");
 world.add(obj);
+world.add(obj2);
 
 // update 
 function update (dt) {
@@ -45,7 +47,6 @@ function loop(time) {
         fps.innerHTML = "FPS: " + frames;
         frames = 0;
         lastFpsTime = time;
-        console.log(obj.speedX);
     };
 
     requestAnimationFrame(loop);
