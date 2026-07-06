@@ -21,10 +21,10 @@ c.height = window.innerHeight;
 
 // objects
 const world = new World(c);
-const obj = new GameObject("random",100,50,50,"circle",world,"orange");
-const obj2 = new GameObject("random",100,50,50,"circle",world,"black");
-world.add(obj);
-world.add(obj2);
+for (let i = 0; i <= 200; i++) {
+    const obj = new GameObject("random","random",20,20,"circle",world,"orange");
+    world.add(obj);
+}
 
 // update 
 function update (dt) {
