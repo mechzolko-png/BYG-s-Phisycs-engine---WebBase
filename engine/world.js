@@ -93,24 +93,24 @@ export class World {
 
             a.update(this,dt,isColliding);
             let action = "world update";
-        };
+        
+            for (const wall of this.map) {
+                const closest = mo.closestPointOnSegment(a, wall.a, wall.b);
+                const diff = mo.subtract(a, closest);
+                const dist = Math.hypot(diff.x, diff.y);
 
-       
-        for (const wall of this.map) {
-            const closest = mo.closestPointOnSegment(a, wall.a, wall.b);
-            const diff = mo.subtract(a, closest);
-            const dist = Math.hypot(diff.x, diff.y);
+                if (dist <= a.width) {
+                    
+                    const penetration = a.width - dist;
+                    a.x += wall.normal.x * penetration;
+                    a.y += wall.normal.y * penetration;
 
-            if (dist <= a.width) {
-                
-                const penetration = a.width - dist;
-                a.x += wall.normal.x * penetration;
-                a.y += wall.normal.y * penetration;
-
-                const r = this.reflect(a.vektor, wall.normal, a.landingLoss);
-                a.speedX = r.x;
-                a.speedY = r.y;
+                    const r = this.reflect(a.vektor, wall.normal, a.landingLoss);
+                    a.speedX = r.x;
+                    a.speedY = r.y;
+                };
             };
+        
         };
         };
 
@@ -120,6 +120,7 @@ export class World {
     draw (ctx) {
         for (const object of this.objects) {
             object.draw(ctx);
+            // console.log();
         };
 
         for (const barrier of this.map) {

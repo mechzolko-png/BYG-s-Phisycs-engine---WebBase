@@ -1,7 +1,7 @@
 // This file contains the core loop and update and the FPS handling...
 
 // import 
-import {GameObject} from "./object.js";
+import {GameObject, WallObject} from "./object.js";
 import {World} from "./world.js";
 
 // canvas and loop (FPS) variables
@@ -21,13 +21,27 @@ c.height = window.innerHeight;
 
 // objects
 const world = new World(c);
-for (let i = 0; i <= 200; i++) {
-    const obj = new GameObject("random","random",20,20,"circle",world,"orange");
+for (let i = 0; i <= 20; i++) {
+    const obj = new GameObject("random","random",10,10,"circle",world,"random");
     world.add(obj);
-}
+};
+
+const wall = new WallObject(600, 600, 100, 600, "black");
+world.place(wall);
+
+
+// let f = 0;
 
 // update 
 function update (dt) {
+    // f++;
+    //    if (f >= 200) { 
+    //      const obj2 = new GameObject("random",10,5,5,"circle",world,"blue");
+    //      world.add(obj2);
+           
+    //     f = 0;
+    //    };
+    
     ctx.clearRect(0, 0, c.width, c.height);
     world.update(dt);    
     world.draw(ctx);

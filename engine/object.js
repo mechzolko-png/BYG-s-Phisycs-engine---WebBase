@@ -4,7 +4,7 @@ export class GameObject {
         this.y = positionY;
         this.speedX = 0;
         this.speedY = 1;
-        this.landingLoss = 0.9;
+        this.landingLoss = 0.75;
         this.friction = 20;
 
         this.vektor = {
@@ -14,6 +14,7 @@ export class GameObject {
 
         this.isOnGround = false;
         this.wall = wall;
+        this.colors = ["orange","black","purple","red","green","blue"]
 
         this.width = width;
         this.height = height;
@@ -27,6 +28,11 @@ export class GameObject {
         if (this.y == "random") {
             this.y = Math.random() * world.height;
         } ;
+
+        if (this.color == "random") {
+            let numb = Math.floor(Math.random() * this.colors.length);
+            this.color = this.colors[numb];
+        };
 
     };
 
@@ -73,7 +79,7 @@ export class GameObject {
             this.speedY = r.y;
             this.isOnGround = true;
 
-       
+
         } else if (this.y <= 0 + this.height) {
             this.y = 0 + this.height;
             const r = world.reflect(this.vektor, ceilingNormal, this.landingLoss);
@@ -127,7 +133,6 @@ export class WallObject {
     constructor(x1, y1, x2, y2, color) {
         this.color = color;
 
-    
         this.a = { x: x1, y: y1 };
         this.b = { x: x2, y: y2 };
 
