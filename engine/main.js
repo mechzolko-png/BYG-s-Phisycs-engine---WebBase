@@ -1,69 +1,72 @@
-// This file contains the core loop and update and the FPS handling...
-
-// import 
-import {GameObject, WallObject} from "./object.js";
-import {World} from "./world.js";
-
-// canvas and loop (FPS) variables
-const c = document.getElementById("canvas");
-const ctx = c.getContext("2d");
-const fps = document.getElementById("fps");
-
-const FPS = 60;
-const FrameTime = 1000 / FPS;
-
-let lastTime = 0;
-let lastFpsTime = 0;
-let frames = 0;
-
-c.width = window.innerWidth;
-c.height = window.innerHeight;
+// imports
+import { Render } from "./render.js";
+import { World } from "./world.js";
+import { Fps } from "./FPShandler.js";
+import { UI } from "../UI/index.js";
 
 // objects
-const world = new World(c);
-for (let i = 0; i <= 20; i++) {
-    const obj = new GameObject("random","random",10,10,"circle",world,"random");
-    world.add(obj);
-};
-
-const wall = new WallObject(600, 600, 100, 600, "black");
-world.place(wall);
+const render = new Render;
+// const fps = new Fps(60,render);
+const ui = new UI();
+// setup
+render.setUpCanvas();
 
 
-// let f = 0;
+const world = new World(render.canvas);
 
-// update 
-function update (dt) {
-    // f++;
-    //    if (f >= 200) { 
-    //      const obj2 = new GameObject("random",10,5,5,"circle",world,"blue");
-    //      world.add(obj2);
-           
-    //     f = 0;
-    //    };
-    
-    ctx.clearRect(0, 0, c.width, c.height);
-    world.update(dt);    
-    world.draw(ctx);
-};
+
+// let lastTime = 0;
+// let frameTime = 1 / 60;
 
 // LOOP
-function loop(time) {
-    
-    const dt = (time - lastTime) / 1000;
-    lastTime = time;
-    frames++;
+// function loop(currentTime) {
+//     let dt = (currentTime - lastTime) / 1000;
+//     lastTime = currentTime;
 
-    update(dt);
+    // const dt = fps.handleFPS(currentTime);
 
-    // FPS COUNTER
-    if (time - lastFpsTime >= 1000) {
-        fps.innerHTML = "FPS: " + frames;
-        frames = 0;
-        lastFpsTime = time;
-    };
+    // if (dt > 0) {
+    //     world.update(dt);
+    //     render.render(world.getRenderData());
+    // }
+
+    // ui.prodFPS(fps.FpS);
+
+//     if (dt >= frameTime) {
+//         world.update(dt);
+//         render.render(world.getRenderData());
+//     };
+
+//     requestAnimationFrame(loop);
+// }
+
+let lastTime = 0;
+
+let fpsTimer = 0;
+let frameCount = 0;
+let averageFPS = 0;
+
+function loop(currentTime) {
+    const dt = (currentTime - lastTime) / 1000;
+    lastTime = currentTime;
+
+    world.update(dt);
+    render.render(world.getRenderData());
+
+    frameCount++;
+    fpsTimer += dt;
+
+    if (fpsTimer >= 1) {
+        averageFPS = frameCount / fpsTimer;
+
+        ui.prodFPS(Math.round(averageFPS));
+
+        frameCount = 0;
+        fpsTimer = 0;
+    }
 
     requestAnimationFrame(loop);
-};
+}
+
 
 requestAnimationFrame(loop);

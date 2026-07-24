@@ -1,3 +1,11 @@
-main --> loop, canvas,
-world --> gravity...
-ball --> friction, landing loss...
+main.js -> loop
+
+math.js -> math
+
+object.js -> objects phisycs
+
+render.js -> frame gen / draw
+
+collision.js -> all collision event handler
+
+phisycs.js -> basic phisycs for everything like gravity or friction things
