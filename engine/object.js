@@ -1,7 +1,12 @@
 import { BallPhysics } from "./physics.js";
+import { Random } from "./math.js";
+
+const random = new Random
+
 
 export class ball {
-    constructor (positionX,positionY,radius,mass,bounce,worldSize,dt) {
+    constructor (positionX,positionY,vx,vy,radius,mass,bounce,worldSize,dt) {
+        this.type = "ball";
         this.data = {
             x: positionX,
             y: positionY,
@@ -11,8 +16,8 @@ export class ball {
             friction: 0.8,
 
             velocity: {
-                x: 0,
-                y: 0
+                x:vx, //random.randint(-1000,10000),
+                y:vy //random.randint(-1000,1000)
             },
 
             state: {
@@ -33,12 +38,20 @@ export class ball {
 
     update (dt) {
         this.bp.update(dt);
-        return this.object = {x: this.data.x, y: this.data.y, r: this.data.r};
+        return this.object = {x: this.data.x, y: this.data.y, r: this.data.r, type: "ball"};
     };
 };
 
 export class wall {
-    constructor () {
-        // wall data
+    constructor (aX,aY,bX,bY,) {
+        this.type = "wall";
+        this.ax = aX;
+        this.ay = aY;
+        this.bx = bX;
+        this.by = bY;
+    };
+
+    getData () {
+        return this.object = {x1: this.ax, y1: this.ay,x2: this.bx,y2: this.by, type:"wall" };
     };
 };

@@ -12,7 +12,7 @@ export class BallPhysics {
         this.peacedY = false;
         this.peacedX = false;
 
-        this.gravity = 9810;
+        this.gravity =  9810
     }
 
     applyGravity(dt) {
@@ -100,10 +100,35 @@ export class BallPhysics {
         };
     };
 
+    friction () {
+        let airFriction = 0.9999;
+        let wallFriction = 0.998;
+
+        if (this.collisionY) {
+            this.ball.velocity.x *= wallFriction;
+            this.ball.velocity.x *= wallFriction;
+        } else if (!this.collisionY) {
+            this.ball.velocity.x *= airFriction;
+            this.ball.velocity.x *= airFriction;
+        }
+
+    };
+
+    setGravity(value) {
+        this.gravity = value;
+    }
+
     update(dt) {
+        if (this.ball.state.onTouch) {
+            this.ball.velocity.x = 0;
+            this.ball.velocity.y = 0;
+            return;
+        }
+
         this.applyGravity(dt);
         this.movePeace();
         this.move(dt);
         this.applyCollision();
+        this.friction();
     };
 };

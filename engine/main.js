@@ -51,7 +51,7 @@ function loop(currentTime) {
     lastTime = currentTime;
 
     world.update(dt);
-    render.render(world.getRenderData());
+    render.render(world.getRenderData()); // giving out all world render data
 
     frameCount++;
     fpsTimer += dt;

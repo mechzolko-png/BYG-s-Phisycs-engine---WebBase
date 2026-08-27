@@ -11,6 +11,7 @@
 
         body {
             margin: 0%;
+            overflow: hidden;
         }
 
         .fps {
@@ -34,14 +35,266 @@
         }
 
         canvas {
+            z-index: -10;
+            position: fixed;
             display: block;
         }
+
+        .btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: x-large;
+            font-weight: 900;
+            background-image: url(UI/gear.png);
+            background-position: center;
+            background-size: cover;
+            transition: all 1s;
+        }
+
+        .btn:hover {
+            transform: rotateZ(360deg);
+            transition: all 1s;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            z-index: 1;
+        }
+
+        .settings {
+            z-index: 2;
+            background-color: black;
+            padding: 20px;
+            border: solid 2px rgba(255, 255, 255, 0.6);
+            box-shadow: inset 0px 0px 10px 1px rgba(255, 255, 255, 0.35);
+            border-radius: 10px;
+        }
+
+        h2 {
+            font-size: x-large;
+        }
+
+        .setting {
+            border-radius: 5px;
+            background-color: black;
+            color: white;
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            height: 30px;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .setblock {
+            background-color: rgba(28, 28, 28, 0.6);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: solid 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .subholder {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .sub {
+            background-color: rgb(0, 140, 255);
+            font-size: large;
+            padding: 5px;
+            border-radius: 5px;
+            border: solid 1px rgba(255, 255, 255, 0.5);
+            transition: all 0.3s;
+        }
+
+        .sub:hover {
+            transform: scale(1.1);
+            background-color: rgb(0, 200, 255);
+            transition: all 0.3s;
+        }
+
+        .termBTN {
+            position: fixed;
+            background-image: url(UI/terminal.png);
+            top: 70px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+        }
+
+        .termBTN:hover {
+            transform: scale(1.1);
+            transition: all 0.3s;
+        }
+
+        .window {
+            display: none;
+            font: 900;
+            font-size: large;
+            color: white;
+            background-color: rgb(28, 28, 28);
+            border: solid 2px rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: absolute;
+            top: 50px;
+            left: 100px;
+            width: 50vw;
+            height: 80vh;
+            z-index: 100;
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            font-size: x-large;
+
+        }
+
+        .window-controlers {
+            padding: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ctr {
+            background-color: rgb(33, 33, 33);
+            padding: 5px;
+            margin-left: 10px;
+            border-radius: 2px;
+            width: 20px;
+            height: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        hr {
+            margin: 0;
+        }
+
+        .title {
+            display: flex;
+            justify-content: center;
+            align-items: center ;
+            margin-left: 10px;
+        }
+
+        .x {
+            background-image: url(UI/cross.png);
+            background-size: cover;
+        }
+
+        .down {
+            background-image: url(UI/minus-button.png);
+            background-size: cover;
+        }
+
+        .min {
+            background-image: url(UI/minimize.png);
+            background-size: cover;
+        }
+
+        .terminal {
+            display: flex;
+            justify-content: center;
+            height: 89%;
+        }
+
+        .termInput {
+            position: absolute;
+            width: 98%;
+            bottom: 0;
+            margin-bottom: 5px;
+            color: white;
+            background-color: black;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            outline: none;
+            border-radius: 5px;
+            display: flex;
+            height: 30px;
+        }
+
+        .inform {
+            border: 2px solid white;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+        }
+
     </style>
 </head>
 <body>
     <div class="fps">
         <div class="f" id="fps">FPS: 0</div>
     </div>
+
+    <div class="btn" id="settingsBTN">  </div>
+    <div class="termBTN" id="termBTN">  </div>
+    
+    <div class="overlay">
+        <div class="settings">
+            <div class="world">
+                <div class="setblock">
+                    <h2>gravity ⬇:</h2>
+                    <input type="number" id="gravity" class="setting" placeholder="9180">
+                </div>
+                <div class="setblock">
+                    <h2>Ground friction:</h2>
+                    <input type="number" id="friction" class="setting" placeholder="(/)0.998">
+                </div>
+                <div class="setblock">
+                    <h2>Air friction:</h2>
+                    <input type="number" id="airFriction" class="setting" placeholder="(/)0.9999">
+                </div>
+                <div class="setblock">
+                    <h2>Balls amount:</h2>
+                    <input type="number" id="balls" class="setting" placeholder="50 (max 200)">
+                </div>
+            </div>
+            <div class="subholder"><div class="sub" id="sub"> Applies </div></div>
+            <div class="object"></div>
+        </div>
+    </div>
+
+    <div class="window">
+        <div class="head">
+            <div class="title"> TERMINAL </div>
+            <div class="window-controlers">
+                <div class="down ctr" id="down"></div>
+                <div class="min ctr" id="min"></div>
+                <div class="x ctr" id="close"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="terminal">
+            <div class="inform" id="output"></div>
+            <input type="text" class="termInput" id="input" placeholder="USER>">
+        </div>
+    </div>
+
     <canvas id="canvas"></canvas>
 </body>
 <script type="module" src="engine/main.js"></script>
