@@ -3,10 +3,14 @@ import { wall } from "./object.js";
 const form = new formula
 
 export class Collision {
+    constructor () {
+        this.Collisions = [];
+    }
     
     detection (distance,radius,object,other) { // get positions, radius
         if (distance <= 2*radius) {
             this.respons(object,other);
+            this.Collisions.push({1:object.data.ID, 2:other.data.ID});
         }
     };
 
@@ -74,7 +78,6 @@ export class Collision {
             
             if (distance <= ball.data.r) {
 
-                console.log("WALL COLLISION!");
 
                 this.wallBallResponse(
                     wall,
@@ -84,6 +87,10 @@ export class Collision {
             }
         }
     }
+
+    // getCollisions () {
+    //     return this.Collisions;
+    // }
 
     respons(object, other) {
         let dx = object.data.x - other.data.x;
@@ -181,7 +188,7 @@ export class Collision {
 
       update(objects) {
         for (let i = 0; i <= 0; i++) { // collision check in one frame
-
+            this.Collisions = [];
             for (let i = 0; i < objects.length; i++) {
                 for (let j = i + 1; j < objects.length; j++) {
                     let object = objects[i];
@@ -189,17 +196,9 @@ export class Collision {
 
                     // ball - ball
                     if (object.type == "ball" && other.type == "ball") {
-                        let distance = form.distance(
-                            other.data.x - object.data.x,
-                            other.data.y - object.data.y
-                        );
+                        let distance = form.distance(other.data.x - object.data.x,other.data.y - object.data.y);
 
-                        this.detection(
-                            distance,
-                            object.data.r,
-                            object,
-                            other
-                        );
+                        let coll = this.detection(distance,object.data.r,object,other);
                     }
 
                     // wall - ball
@@ -212,8 +211,11 @@ export class Collision {
                         this.wallBallDetection(other, object);        
                     }
                 }
+                // console.log(this.Collisions)
+                // return this.Collisions;
+                // this.Collisions = [];
             }
-
+            return this.Collisions;
         }
     }
 }

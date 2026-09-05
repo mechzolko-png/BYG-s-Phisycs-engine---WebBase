@@ -13,6 +13,7 @@ export class PhysicsWorld {
         this.render.setUpCanvas();
         this.world = new World(this.render.canvas);
         this.random = new Random()
+        this.collisions = [];
     }
 
     spawn (x,y,vx,vy) {
@@ -28,7 +29,7 @@ export class PhysicsWorld {
 
             lastTime = ct;
 
-            this.world.update(dt);
+            this.collisions = this.world.update(dt);
             this.render.render(this.world.getRenderData());
 
             requestAnimationFrame(loop);
@@ -36,4 +37,18 @@ export class PhysicsWorld {
 
         requestAnimationFrame(loop);
     }
+
+    isCollideWith (ID1,ID2) {
+        return this.collisions == {1:ID1, 2:ID2} || this.collisions == {1:ID2,2:ID1};
+    }
+
 }
+
+
+/*
+
+API:
+- isCollidedWith(): |function that returns if the selected object collided with the other object| >> needs 2 args: the target object, the collide object >> returns: ture or false
+- 
+
+*/

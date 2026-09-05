@@ -19,6 +19,8 @@ export class World {
         this.RenderData = [];
         this.collisionData = [];
         this.amount = 30
+        this.coll = [];
+        this.collisions = []
         
         // for (let i = 0; i < this.amount; i++) { // world object born -> new balls spawn
         //     // this.spawn(200,500,100,0);
@@ -44,7 +46,6 @@ export class World {
         let ID = this.objects.length;
         this.ball = new ball(x,y,vx,vy,20,1,0.5,this.size,this.dt,ID);
         this.objects.push(this.ball);
-        console.log("BALL ID SPAWN: ", ID);
         return this.ball
     };
 
@@ -68,11 +69,26 @@ export class World {
                 this.RenderData.push(obj)
             };
 
-            collision.update(this.objects);
+            
         };
+        this.coll = collision.update(this.objects);
+        if (this.coll.length > 0) {console.log(this.coll);}
+        return this.coll
     };
 
     getRenderData () {
         return this.RenderData;
     };
 };
+
+
+
+/*
+THINGS TO GET DONE HERE:
+
+>>API things
+- place(): |Function to place walls-platforms| >> needs 4 args: the walls 2 points koordinates(4),
+- spawn(): |Function to summon balls and different kind of objects| >> needs 3 args: the balls position(2), the type of object you want to spawn
+- getObject(): |Function that returns an object by it's ID / name| >> needs 1 arg: the object ID or name >> returns: object
+- getCollision(): |Function that returns all the collision in the game| >> needs no arg >> returns: a data object thats all the collision data is inside like which object collided with the other.
+*/
