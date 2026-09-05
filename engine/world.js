@@ -15,11 +15,16 @@ export class World {
             height: canvas.height,
             width: canvas.width
         };
-
         this.objects = [];
         this.RenderData = [];
         this.collisionData = [];
         this.amount = 30
+        
+        // for (let i = 0; i < this.amount; i++) { // world object born -> new balls spawn
+        //     // this.spawn(200,500,100,0);
+        //     // this.spawn(2000,500,-1000,0);
+        //     this.spawn(random.randint(0,this.size.width),random.randint(0,this.size.height),random.randint(-1000,1000),random.randint(-1000,1000))
+        // };
 
         this.place(0, 700, 1200, 700);   
         this.place(0, 0, 0, 700);        
@@ -36,19 +41,11 @@ export class World {
     spawn (x,y,vx,vy) {
         this.x = this.size.width;
         this.y = this.size.height;
-        // let ID = this.objects.length;
-        const Ball = new ball(x,y,vx,vy,20,1,0.5,this.size)//,this.dt,)//ID);
-        this.objects.push(Ball);
-        // console.log("BALL ID SPAWN: ", ID);
-        // return this.ball
-        console.log(
-            "SPAWN SNAPSHOT:",
-            "x =", Ball.data.x,
-            "y =", Ball.data.y,
-            "vx =", Ball.data.velocity.x,
-            "vy =", Ball.data.velocity.y,
-            "dt =", Ball.data.dt
-        );
+        let ID = this.objects.length;
+        this.ball = new ball(x,y,vx,vy,20,1,0.5,this.size,this.dt,ID);
+        this.objects.push(this.ball);
+        console.log("BALL ID SPAWN: ", ID);
+        return this.ball
     };
 
     place (x1,y1,x2,y2) {
@@ -58,12 +55,13 @@ export class World {
 
     update(dt) {
         this.RenderData = [];
-        for (const object of this.objects) {     
+        for (const object of this.objects) {
+            
             if (object.type == "ball") {
-                interact.grabBall(object);
+                interact.grabBall(object)
                 const obj = object.update(dt);
                 this.RenderData.push(obj);
-            }
+            };
 
             if (object.type == "wall") {
                 const obj = object.getData();
