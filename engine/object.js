@@ -5,7 +5,7 @@ const random = new Random
 
 
 export class ball {
-    constructor (positionX,positionY,vx,vy,radius,mass,bounce,worldSize,dt) {
+    constructor (positionX,positionY,vx,vy,radius,mass,bounce,worldSize,dt,ID) {
         this.type = "ball";
         this.data = {
             x: positionX,
@@ -31,7 +31,8 @@ export class ball {
                 width: worldSize.width
             },
 
-            dt: dt
+            dt: dt,
+            ID: ID,
         };
         this.bp = new BallPhysics(this.data,this.data.world,this.data.dt)
     };
