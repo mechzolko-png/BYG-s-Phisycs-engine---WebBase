@@ -30,7 +30,8 @@ export class World {
 
         this.place(0, 700, 1200, 700);   
         this.place(0, 0, 0, 700);        
-        this.place(1200, 0, 1200, 700);  
+        this.place(1200, 0, 1200, 700); 
+        
         this.place(0, 0, 1200, 0);       
 
         this.place(200, 550, 500, 450);
