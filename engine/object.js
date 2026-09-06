@@ -13,7 +13,8 @@ export class ball {
             r: radius,
             m: mass,
             b: bounce,
-            friction: 0.8,
+            friction: 0.9,
+            restitution: 0.9,
 
             velocity: {
                 x:vx, //random.randint(-1000,10000),
@@ -21,17 +22,13 @@ export class ball {
             },
 
             state: {
-                collision: false,
                 onTouch: false,
-                selected: false
             },
 
             world: {
                 height: worldSize.height,
                 width: worldSize.width
             },
-
-            dt: dt,
             ID: ID,
         };
         this.bp = new BallPhysics(this.data,this.data.world,this.data.dt)

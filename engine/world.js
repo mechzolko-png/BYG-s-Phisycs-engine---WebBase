@@ -40,13 +40,15 @@ export class World {
 
     };
 
+
+    // SPAWN & BUILDING
     spawn (x,y,vx,vy) {
         this.x = this.size.width;
         this.y = this.size.height;
         let ID = this.objects.length;
         this.ball = new ball(x,y,vx,vy,20,1,0.5,this.size,this.dt,ID);
         this.objects.push(this.ball);
-        return this.ball
+        return this.ball.data.ID
     };
 
     place (x1,y1,x2,y2) {
@@ -54,6 +56,22 @@ export class World {
         this.objects.push(this.wall);
     };
 
+    destroy(ID) {
+        let index = this.objects.findIndex(
+            object => object.type === "ball" &&
+                    object.data.ID === ID
+        );
+
+        if (index === -1) {
+            return false;
+        }
+
+        this.objects.splice(index, 1);
+
+        return true;
+    }
+
+    // PHYSICS MAIN FUNCTION
     update(dt) {
         this.RenderData = [];
         for (const object of this.objects) {
@@ -79,6 +97,71 @@ export class World {
     getRenderData () {
         return this.RenderData;
     };
+
+    getObjectByID (ID) {
+        for (let object of this.objects) {
+            if (object.type == "ball") {if (object.data.ID == ID) {return object}}
+        } 
+    }
+
+
+    // PROPERTY API PIPE SYSTEM
+
+    addVelocity (ID,x,y) {
+        let ob = this.getObjectByID(ID);
+
+        ob.data.velocity.x += x;
+        ob.data.velocity.y += y;
+    }
+
+    getVelocity (ID) {
+        let ob = this.getObjectByID(ID);
+
+        return {x:ob.data.velocity.x,y:ob.data.velocity.y}
+    }
+
+    setMass (ID,mass) {
+        let ob = this.getObjectByID(ID);
+        ob.data.m = mass;
+    }
+
+    getMass (ID) {
+        let ob = this.getObjectByID(ID);
+        return ob.data.m;
+    }
+
+    setPosition (ID,x,y) {
+        let ob = this.getObjectByID(ID);
+
+        ob.data.x = x;
+        ob.data.y = y;
+    }
+
+    getPosition (ID) {
+        let ob = this.getObjectByID(ID);
+        return {x:ob.data.x,y:ob.data.y};
+    }
+
+    setRadius (ID,r) {
+        let ob = this.getObjectByID(ID);
+        ob.data.r = r;
+    }
+
+    getRadius (ID) {
+        let ob = this.getObjectByID(ID);
+        return ob.data.r
+    }
+
+    setBounce (ID,b) {
+        let ob = this.getObjectByID(ID);
+        ob.data.b = b;
+    }
+
+    getBounce () {
+        let ob = this.getObjectByID(ID);
+        return ob.data.b;
+    }
+
 };
 
 

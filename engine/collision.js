@@ -10,7 +10,7 @@ export class Collision {
     detection (distance,radius,object,other) { // get positions, radius
         if (distance <= 2*radius) {
             this.respons(object,other);
-            this.Collisions.push({1:object.data.ID, 2:other.data.ID});
+            this.Collisions.push({objectA:object.data.ID, objectB:other.data.ID});
         }
     };
 
@@ -101,7 +101,6 @@ export class Collision {
         let nx = dx / dist;
         let ny = dy / dist;
 
-        
         let rvx =
             object.data.velocity.x -
             other.data.velocity.x;
@@ -110,39 +109,40 @@ export class Collision {
             object.data.velocity.y -
             other.data.velocity.y;
 
-        
         let dot = rvx * nx + rvy * ny;
 
-        
         if (dot > 0) {
             return;
         }
 
-       
-        let normalX = nx * dot;
-        let normalY = ny * dot;
+        let e = Math.min(
+            object.data.b,
+            other.data.b
+        );
 
-        
-        let newRvx = rvx - 2 * normalX;
-        let newRvy = rvy - 2 * normalY;
+        let j =
+            -(1 + e) * dot /
+            (1 / object.data.m + 1 / other.data.m);
 
-        
-        let deltaRvx = newRvx - rvx;
-        let deltaRvy = newRvy - rvy;
+        let impulseX = j * nx;
+        let impulseY = j * ny;
 
-       
-        let changeX = deltaRvx / 2;
-        let changeY = deltaRvy / 2;
+        object.data.velocity.x +=
+            impulseX / object.data.m;
 
-      
-        object.data.velocity.x += changeX * 0.9;
-        object.data.velocity.y += changeY * 0.9;
+        object.data.velocity.y +=
+            impulseY / object.data.m;
 
-       
-        other.data.velocity.x -= changeX * 0.9;
-        other.data.velocity.y -= changeY * 0.9;
+        other.data.velocity.x -=
+            impulseX / other.data.m;
 
-        let overlap = object.data.r + other.data.r - dist;
+        other.data.velocity.y -=
+            impulseY / other.data.m;
+
+        let overlap =
+            object.data.r +
+            other.data.r -
+            dist;
 
         if (overlap > 0) {
             let correction = overlap * 0.5;
@@ -152,9 +152,9 @@ export class Collision {
 
             other.data.x -= nx * correction;
             other.data.y -= ny * correction;
-
         }
     }
+    
 
     wallBallResponse(wall, ball, point) {
         let nx = ball.data.x - point.x;
@@ -219,3 +219,4 @@ export class Collision {
         }
     }
 }
+
